@@ -1,0 +1,58 @@
+spring:
+  profiles:
+      active: local # default 프로필 설정
+      group: # 활성화 프로필과 함께 사용할 프로필 설정
+        local:
+          - common
+        dev:
+          - common
+        prd:
+          - common
+
+# common, 최상단에 두지 않으면 현재 프로필 설정 확인 시 common이됨
+---
+spring:
+  config:
+    activate:
+      onProfile: common  
+custom:
+# cron 설정은 환경별로 다르게 설정할 가능성이 적으나 enum 설정이 불가하여
+  cron:
+    everyFiveSecond: "0/5 * * * * *"
+    everyMinute: "0 * * * * *"
+    everyHour: "0 0 * * * *"
+    everyDay: "0 0 0 * * *"
+
+# 아래에는 환경별로 달라야하는 정보만 입력(DB, 연동 API 주소 등)
+--- # local
+spring:
+  config:
+    activate:
+      onProfile: local
+custom:
+  enval: localVal
+url:
+  map-api: http://localhost:8081
+  auth-api: http://localhost:8082
+  
+--- # dev
+spring:
+  config:
+    activate:
+      onProfile: dev
+custom:
+  enval: devVal
+url:
+  map-api: http://dev:8081
+  auth-api: http://dev:8082
+  
+--- # prd
+spring:
+  config:
+    activate:
+      onProfile: prd
+custom:
+  enval: prdVal
+url:
+  map-api: http://prd:8081
+  auth-api: http://prd:8082
